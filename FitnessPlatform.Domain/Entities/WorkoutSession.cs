@@ -9,10 +9,15 @@ namespace FitnessPlatform.Domain.Entities
         public int TargetCaloriesBurn { get; private set; }
         public bool IsCompleted { get; private set; }
 
-        private WorkoutSession() { } // برای EF Core
+        // مقداردهی اولیه برای رفع اخطارها
+        private WorkoutSession()
+        {
+            Title = string.Empty;
+        }
 
-        // متد Factory برای ساخت جلسه جدید
-        public static WorkoutSession Create(string title, DateTime date, int targetCaloriesBurn)
+        // کلمه internal باعث می‌شود این متد فقط در لایه Domain قابل استفاده باشد
+        // در نتیجه تنها کلاس WorkoutProgram اجازه ساخت Session را خواهد داشت!
+        internal static WorkoutSession Create(string title, DateTime date, int targetCaloriesBurn)
         {
             return new WorkoutSession
             {

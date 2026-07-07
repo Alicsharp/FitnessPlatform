@@ -1,5 +1,6 @@
 ﻿using FitnessPlatform.Domain.Common;
 using FitnessPlatform.Domain.ValueObjects;
+using FitnessPlatform.Domain.ValueObjects.FitnessPlatform.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,15 +15,20 @@ namespace FitnessPlatform.Domain.Entities
         public ProgramDuration Duration { get; private set; }
         public bool IsActive { get; private set; }
 
-        // کپسوله‌سازی لیست جلسات. بیرون از کلاس نمی‌توانند مستقیماً به لیست Add کنند.
         private readonly List<WorkoutSession> _sessions = new();
         public IReadOnlyCollection<WorkoutSession> Sessions => _sessions.AsReadOnly();
 
-        private WorkoutProgram() { } // برای EF Core
+        // رفع اخطار CS8618 با دادن مقدار پیش‌فرض در سازنده مخصوص پایگاه داده
+        private WorkoutProgram()
+        {
+            Title = string.Empty;
+            Objective = string.Empty;
+            Duration = null!; // این مورد در تنظیمات EF Core پیکربندی خواهد شد
+        }
 
         public static WorkoutProgram Create(Guid userId, string title, string objective, ProgramDuration duration)
         {
-            return new WorkoutProgram
+            var program = new WorkoutProgram
             {
                 Id = Guid.NewGuid(),
                 UserId = userId,
@@ -31,9 +37,13 @@ namespace FitnessPlatform.Domain.Entities
                 Duration = duration,
                 IsActive = true
             };
+
+            // پرتاب رویداد بیزینسی برای RabbitMQ (در مراحل بعدی یک کلاس اختصاصی برایش می‌سازیم)
+            program.AddDomainEvent(new { EventName = "WorkoutProgramCreated", UserId = userId, ProgramId = program.Id });
+
+            return program;
         }
 
-        // منطق تجاری: اضافه کردن جلسه تمرینی جدید با کنترل خطا
         public void AddSession(WorkoutSession session)
         {
             // چک می‌کنیم که کاربر در یک روز، دو جلسه تمرینی با یک نام نداشته باشد

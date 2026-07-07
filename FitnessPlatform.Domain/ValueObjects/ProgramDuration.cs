@@ -4,21 +4,25 @@ using System.Text;
 
 namespace FitnessPlatform.Domain.ValueObjects
 {
-    public class ProgramDuration
+    namespace FitnessPlatform.Domain.ValueObjects
     {
-        public DateTime StartDate { get; private set; }
-        public DateTime EndDate { get; private set; }
-
-        public ProgramDuration(DateTime startDate, DateTime endDate)
+        // تبدیل به رکورد برای پشتیبانی ذاتی از Value Equality در تفکر DDD
+        public record ProgramDuration
         {
-            if (startDate >= endDate)
-                throw new ArgumentException("تاریخ پایان باید بعد از تاریخ شروع باشد.");
+            public DateTime StartDate { get; init; }
+            public DateTime EndDate { get; init; }
 
-            StartDate = startDate;
-            EndDate = endDate;
+            public ProgramDuration(DateTime startDate, DateTime endDate)
+            {
+                if (startDate >= endDate)
+                    throw new ArgumentException("تاریخ پایان باید بعد از تاریخ شروع باشد.");
+
+                StartDate = startDate;
+                EndDate = endDate;
+            }
+
+            // یک متد کاربردی برای محاسبه تعداد روزها
+            public int GetTotalDays() => (EndDate - StartDate).Days;
         }
-
-        // یک متد کاربردی برای محاسبه تعداد ماه‌ها یا هفته‌ها
-        public int GetTotalDays() => (EndDate - StartDate).Days;
     }
 }

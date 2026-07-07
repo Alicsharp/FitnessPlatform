@@ -1,6 +1,7 @@
 ﻿using FitnessPlatform.Domain.Entities;
 using FitnessPlatform.Domain.Repositories;
 using FitnessPlatform.Domain.ValueObjects;
+using FitnessPlatform.Domain.ValueObjects.FitnessPlatform.Domain.ValueObjects;
 using MediatR;
 using System;
 using System.Collections.Generic;

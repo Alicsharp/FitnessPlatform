@@ -9,13 +9,17 @@ namespace FitnessPlatform.Domain.Common
         public Guid Id { get; protected set; }
         public DateTime CreatedAt { get; private set; }
         public DateTime? UpdatedAt { get; protected set; }
+
+        // اضافه شدن لیست رویدادهای دامین برای معماری رویدادمحور
+        private readonly List<object> _domainEvents = new();
+        public IReadOnlyCollection<object> DomainEvents => _domainEvents.AsReadOnly();
+
         protected Entity(Guid id)
         {
             Id = id;
             CreatedAt = DateTime.UtcNow;
         }
 
-        // یک سازنده خالی برای EF Core نیاز است
         protected Entity()
         {
             CreatedAt = DateTime.UtcNow;
@@ -24,6 +28,16 @@ namespace FitnessPlatform.Domain.Common
         protected void UpdateTimestamp()
         {
             UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void AddDomainEvent(object domainEvent)
+        {
+            _domainEvents.Add(domainEvent);
+        }
+
+        public void ClearDomainEvents()
+        {
+            _domainEvents.Clear();
         }
     }
 }
