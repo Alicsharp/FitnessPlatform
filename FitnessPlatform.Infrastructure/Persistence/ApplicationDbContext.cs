@@ -4,24 +4,41 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using global::FitnessPlatform.Domain.Billing;
+using Microsoft.EntityFrameworkCore;
 namespace FitnessPlatform.Infrastructure.Persistence
 {
-    public class ApplicationDbContext : DbContext
+
+
+    namespace FitnessPlatform.Infrastructure.Persistence
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        public class ApplicationDbContext : DbContext
         {
-        }
+            public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+            {
+            }
 
-        public DbSet<WorkoutProgram> WorkoutPrograms => Set<WorkoutProgram>();
-        public DbSet<WorkoutSession> WorkoutSessions => Set<WorkoutSession>();
+            public DbSet<WorkoutProgram> WorkoutPrograms => Set<WorkoutProgram>();
+            public DbSet<WorkoutSession> WorkoutSessions => Set<WorkoutSession>();
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            // این خط تمام تنظیمات کانفیگ لایه زیرساخت را به صورت خودکار اسکن و اعمال می‌کند
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+            // جداول سیستم احراز هویت و باشگاه
+            public DbSet<User> Users => Set<User>();
+            public DbSet<Member> Members => Set<Member>();
+            public DbSet<Trainer> Trainers => Set<Trainer>();
 
-            base.OnModelCreating(modelBuilder);
+            // ==========================================
+            // ⚡️ جداول جدید هسته مالی و اشتراک‌ها
+            // ==========================================
+            public DbSet<SubscriptionPlan> SubscriptionPlans => Set<SubscriptionPlan>();
+            public DbSet<UserSubscription> UserSubscriptions => Set<UserSubscription>();
+
+            protected override void OnModelCreating(ModelBuilder modelBuilder)
+            {
+                // این خط تمام تنظیمات کانفیگ لایه زیرساخت (شامل کانفیگ‌های جدید مالی) را به صورت خودکار اسکن و اعمال می‌کند
+                modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+
+                base.OnModelCreating(modelBuilder);
+            }
         }
     }
 }
- 

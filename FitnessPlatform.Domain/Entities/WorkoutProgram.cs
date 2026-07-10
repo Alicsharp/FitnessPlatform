@@ -1,5 +1,4 @@
 ﻿using FitnessPlatform.Domain.Common;
-using FitnessPlatform.Domain.ValueObjects;
 using FitnessPlatform.Domain.ValueObjects.FitnessPlatform.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;

@@ -1,6 +1,7 @@
 ﻿using FitnessPlatform.Domain.Entities;
 using FitnessPlatform.Domain.Repositories;
 using FitnessPlatform.Infrastructure.Persistence;
+using FitnessPlatform.Infrastructure.Persistence.FitnessPlatform.Infrastructure.Persistence;
 
 namespace FitnessPlatform.Infrastructure.Repositories
 {

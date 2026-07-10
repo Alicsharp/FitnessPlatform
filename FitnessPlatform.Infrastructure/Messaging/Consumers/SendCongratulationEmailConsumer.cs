@@ -29,4 +29,5 @@ namespace FitnessPlatform.Infrastructure.Messaging.Consumers
             return Task.CompletedTask;
         }
     }
+
 }
