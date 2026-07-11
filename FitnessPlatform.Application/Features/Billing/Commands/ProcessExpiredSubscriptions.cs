@@ -20,6 +20,7 @@ namespace FitnessPlatform.Application.Features.Billing.Commands
             _repository = repository;
         }
 
+
         public async Task<int> Handle(ProcessExpiredSubscriptionsCommand request, CancellationToken cancellationToken)
         {
             // ۱. پیدا کردن اشتراک‌هایی که تاریخشان گذشته اما هنوز جلساتشان صفر نشده است

@@ -17,7 +17,7 @@ namespace FitnessPlatform.Domain.Entities
 
         // کلمه internal باعث می‌شود این متد فقط در لایه Domain قابل استفاده باشد
         // در نتیجه تنها کلاس WorkoutProgram اجازه ساخت Session را خواهد داشت!
-        internal static WorkoutSession Create(string title, DateTime date, int targetCaloriesBurn)
+        public static WorkoutSession Create(string title, DateTime date, int targetCaloriesBurn)
         {
             return new WorkoutSession
             {

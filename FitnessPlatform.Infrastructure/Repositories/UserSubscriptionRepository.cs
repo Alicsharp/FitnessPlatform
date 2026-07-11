@@ -15,8 +15,17 @@ namespace FitnessPlatform.Infrastructure.Repositories
             {
                 _context = context;
             }
+        public async Task<IEnumerable<UserSubscription>> GetExpiredSubscriptionsAsync(CancellationToken cancellationToken = default)
+        {
+            var now = DateTime.UtcNow;
 
-            public async Task AddAsync(UserSubscription subscription, CancellationToken cancellationToken = default)
+            return await _context.UserSubscriptions
+                // شرط: تاریخ پایان از الان کوچکتر باشد (یعنی زمان آن گذشته باشد) 
+                // و هنوز جلساتی برای سوزاندن باقی مانده باشد (تا رکوردهایی که قبلاً صفر شده‌اند دوباره بررسی نشوند)
+                .Where(s => s.EndDate < now && s.RemainingSessions > 0)
+                .ToListAsync(cancellationToken);
+        }
+        public async Task AddAsync(UserSubscription subscription, CancellationToken cancellationToken = default)
             {
                 await _context.UserSubscriptions.AddAsync(subscription, cancellationToken);
             }
