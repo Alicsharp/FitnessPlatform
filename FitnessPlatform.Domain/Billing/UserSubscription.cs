@@ -1,4 +1,5 @@
 ﻿using FitnessPlatform.Domain.Common;
+using FitnessPlatform.Domain.Events;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -64,7 +65,19 @@ namespace FitnessPlatform.Domain.Billing
                 AddDomainEvent(new { EventName = "UserSubscriptionFinished", UserId = UserId });
             }
         }
+        public void Expire()
+        {
+            // اگر از قبل منقضی شده، کاری نمی‌کنیم
+            if (RemainingSessions == 0 && DateTime.UtcNow > EndDate) return;
 
+            RemainingSessions = 0; // صفر کردن جلسات
+            EndDate = DateTime.UtcNow.AddDays(-1); // تنظیم تاریخ به گذشته برای اطمینان از نامعتبر شدن
+
+            UpdateTimestamp();
+
+            // ⚡️ پرتاب رویداد دامین برای RabbitMQ
+            AddDomainEvent(new SubscriptionExpiredEvent(UserId, Id));
+        }
         // متد تمدید دستی
         public void ExtendEndDate(int extraDays)
         {

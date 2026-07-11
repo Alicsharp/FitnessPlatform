@@ -6,8 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FitnessPlatform.Infrastructure.Repositories
 {
-    public partial class UserRepository
-    {
+   
         public class UserSubscriptionRepository : IUserSubscriptionRepository
         {
             private readonly ApplicationDbContext _context;
@@ -48,5 +47,4 @@ namespace FitnessPlatform.Infrastructure.Repositories
             }
         }
     }
-}
-
+ 

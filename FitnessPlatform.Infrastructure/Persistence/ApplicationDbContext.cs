@@ -6,6 +6,7 @@ using System.Text;
 
 using global::FitnessPlatform.Domain.Billing;
 using Microsoft.EntityFrameworkCore;
+using FitnessPlatform.Domain.Booking;
 namespace FitnessPlatform.Infrastructure.Persistence
 {
 
@@ -17,6 +18,10 @@ namespace FitnessPlatform.Infrastructure.Persistence
             public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
             {
             }
+
+            public DbSet<GroupClass> GroupClasses => Set<GroupClass>();
+
+
 
             public DbSet<WorkoutProgram> WorkoutPrograms => Set<WorkoutProgram>();
             public DbSet<WorkoutSession> WorkoutSessions => Set<WorkoutSession>();

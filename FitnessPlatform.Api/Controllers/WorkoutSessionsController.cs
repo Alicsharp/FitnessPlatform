@@ -34,4 +34,7 @@ namespace FitnessPlatform.Api.Controllers
             return BadRequest("مشکلی در ثبت پایان تمرین به وجود آمد.");
         }
     }
+
+    // رکورد کمکی برای دریافت شناسه کاربر در زمان ثبت‌نام
+    public record EnrollRequest(Guid UserId);
 }

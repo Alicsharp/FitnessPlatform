@@ -5,7 +5,7 @@ namespace FitnessPlatform.Domain.Repositories
     public interface IUserSubscriptionRepository
     {
         Task AddAsync(UserSubscription subscription, CancellationToken cancellationToken = default);
-
+        Task<IEnumerable<UserSubscription>> GetExpiredSubscriptionsAsync(CancellationToken cancellationToken = default);
         // ⚡️ اضافه شدن متد آپدیت برای ذخیره تغییرات جلسات و تاریخ
         Task UpdateAsync(UserSubscription subscription, CancellationToken cancellationToken = default);
         Task<UserSubscription?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
