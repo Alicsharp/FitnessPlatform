@@ -3,12 +3,14 @@ using FitnessPlatform.Domain.Repositories;
 using FitnessPlatform.Infrastructure.Messaging.Consumers;
 using FitnessPlatform.Infrastructure.Persistence;
 using FitnessPlatform.Infrastructure.Persistence.FitnessPlatform.Infrastructure.Persistence;
+using FitnessPlatform.Infrastructure.Persistence.Interceptors;
 using FitnessPlatform.Infrastructure.Repositories;
 using FitnessPlatform.Infrastructure.Security;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Quartz;
 using static FitnessPlatform.Infrastructure.Repositories.UserRepository;
 // در صورت نیاز فضای نام دیتابیس و ریپازیتوری‌ها را هم اضافه کن
 
@@ -18,11 +20,37 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
+
+        services.AddSingleton<OutboxInterceptor>();
+
+
         // ==========================================
         // ۱. پیکربندی پایگاه داده (SQL Server)
         // ==========================================
-        services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+        services.AddDbContext<ApplicationDbContext>((sp, options) =>
+        {
+            var interceptor = sp.GetRequiredService<OutboxInterceptor>();
+            // کانکشن استرینگ خودتان را اینجا قرار دهید
+            options.UseSqlServer("Your_Connection_String")
+                   .AddInterceptors(interceptor);
+        });
+        services.AddQuartz(configure =>
+        {
+            var jobKey = new JobKey(nameof(OutboxMessageProcessorJob));
+
+            configure
+                .AddJob<OutboxMessageProcessorJob>(jobKey)
+                .AddTrigger(trigger =>
+                    trigger.ForJob(jobKey)
+                           .WithSimpleSchedule(schedule =>
+                               schedule.WithIntervalInSeconds(10) // هر ۱۰ ثانیه چک می‌کند
+                                       .RepeatForever()));
+        });
+
+        services.AddQuartzHostedService(options =>
+        {
+            options.WaitForJobsToComplete = true;
+        });
 
         // ==========================================
         // ۲. ثبت ریپازیتوری‌ها (Data Access)

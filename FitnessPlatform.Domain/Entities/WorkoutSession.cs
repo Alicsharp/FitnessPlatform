@@ -36,7 +36,16 @@ namespace FitnessPlatform.Domain.Entities
                 throw new InvalidOperationException("این جلسه قبلاً تکمیل شده است.");
 
             IsCompleted = true;
-            UpdateTimestamp();
+            UpdateTimestamp(); //[cite: 5]
+
+            // ⚡️ ثبت رویداد دامین که بعداً تبدیل به پیام Outbox می‌شود
+            AddDomainEvent(new
+            {
+                EventName = "WorkoutSessionCompleted",
+                SessionId = Id,
+                DateCompleted = DateTime.UtcNow
+            });
         }
+       
     }
 }

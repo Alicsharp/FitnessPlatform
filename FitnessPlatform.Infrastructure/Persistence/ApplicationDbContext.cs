@@ -1,12 +1,12 @@
-﻿using FitnessPlatform.Domain.Entities;
+﻿using FitnessPlatform.Domain.Booking;
+using FitnessPlatform.Domain.Common;
+using FitnessPlatform.Domain.Entities;
+using global::FitnessPlatform.Domain.Billing;
 using Microsoft.EntityFrameworkCore;
+ 
 using System;
 using System.Collections.Generic;
 using System.Text;
-
-using global::FitnessPlatform.Domain.Billing;
-using Microsoft.EntityFrameworkCore;
-using FitnessPlatform.Domain.Booking;
 namespace FitnessPlatform.Infrastructure.Persistence
 {
 
@@ -36,7 +36,8 @@ namespace FitnessPlatform.Infrastructure.Persistence
             // ==========================================
             public DbSet<SubscriptionPlan> SubscriptionPlans => Set<SubscriptionPlan>();
             public DbSet<UserSubscription> UserSubscriptions => Set<UserSubscription>();
-
+            // ⚡️ جدول جدید صندوق پستی (Outbox)
+            public DbSet<OutboxMessage> OutboxMessages => Set<OutboxMessage>();
             protected override void OnModelCreating(ModelBuilder modelBuilder)
             {
                 // این خط تمام تنظیمات کانفیگ لایه زیرساخت (شامل کانفیگ‌های جدید مالی) را به صورت خودکار اسکن و اعمال می‌کند

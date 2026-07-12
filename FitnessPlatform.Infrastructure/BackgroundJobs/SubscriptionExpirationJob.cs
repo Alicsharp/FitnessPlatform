@@ -1,5 +1,8 @@
 ﻿using FitnessPlatform.Application.Features.Billing.Commands;
+using MassTransit;
+using MassTransit.Mediator;
 using Microsoft.Extensions.Logging;
+using Quartz;
 using System;
 using System.Collections.Generic;
 using System.Text;

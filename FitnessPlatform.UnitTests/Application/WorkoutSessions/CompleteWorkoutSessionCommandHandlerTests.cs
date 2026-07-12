@@ -1,4 +1,6 @@
-﻿using FitnessPlatform.Application.Features.WorkoutSessions.Commands.CompleteSession;
+﻿using FitnessPlatform.Application.Events;
+using FitnessPlatform.Application.Features.WorkoutSessions.Commands.CompleteSession;
+using FluentAssertions;
 using MassTransit;
 using Moq;
 using System;
