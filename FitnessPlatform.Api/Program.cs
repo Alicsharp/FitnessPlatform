@@ -60,6 +60,8 @@ try
                builder.Configuration.GetConnectionString("Redis") ?? "localhost:6379",
                name: "Redis Cache",
                tags: new[] { "cache", "redis" });
+    builder.Services.AddExceptionHandler<FitnessPlatform.Api.Middlewares.GlobalExceptionHandler>();
+    builder.Services.AddProblemDetails();
 
     var app = builder.Build();
 
@@ -75,7 +77,7 @@ try
 
     // =====================================
     app.UseHttpsRedirection();
-
+    app.UseExceptionHandler();
     // ترتیب این دو خط بسیار مهم است
     app.UseAuthentication();
     app.UseAuthorization();

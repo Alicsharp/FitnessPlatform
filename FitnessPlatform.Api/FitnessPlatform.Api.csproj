@@ -36,4 +36,8 @@
     <ProjectReference Include="..\FitnessPlatform.Infrastructure\FitnessPlatform.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Middlewares\" />
+  </ItemGroup>
+
 </Project>
