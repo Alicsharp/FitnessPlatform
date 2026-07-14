@@ -1,6 +1,10 @@
 ﻿using FitnessPlatform.Infrastructure.Persistence.FitnessPlatform.Infrastructure.Persistence;
 using MassTransit;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using Quartz;
+
 
 namespace FitnessPlatform.Infrastructure.BackgroundJobs
 {
@@ -42,7 +46,7 @@ namespace FitnessPlatform.Infrastructure.BackgroundJobs
                     if (eventType == null) continue;
 
                     // تبدیل JSON به شیء واقعی
-                    var domainEvent = JsonConvert.DeserializeObject(message.Content, eventType, new JsonSerializerSettings
+                    var domainEvent =  JsonConvert.DeserializeObject(message.Content, eventType, new JsonSerializerSettings
                     {
                         TypeNameHandling = TypeNameHandling.All
                     });

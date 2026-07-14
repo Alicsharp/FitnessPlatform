@@ -8,8 +8,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace FitnessPlatform.Infrastructure.BackgroundJobs
-{
-    // این ویژگی می‌گوید که این جاب نباید همزمان چند بار اجرا شود
+{ // این ویژگی می‌گوید که این جاب نباید همزمان چند بار اجرا شود
     [DisallowConcurrentExecution]
     public class SubscriptionExpirationJob : IJob
     {
@@ -30,9 +29,12 @@ namespace FitnessPlatform.Infrastructure.BackgroundJobs
             {
                 // ⚡️ شلیک کامند به سمت لایه Application
                 var command = new ProcessExpiredSubscriptionsCommand();
-                var count = await _mediator.Send(command);
 
-                _logger.LogInformation("✅ Job با موفقیت پایان یافت. تعداد {Count} اشتراک منقضی و به RabbitMQ ارسال شد.", count);
+                // ❌ متغیر count برداشته شد چون این کامند خروجی ندارد
+                await _mediator.Send(command);
+
+                // لاگ آپدیت شد تا نیازی به متغیر count نداشته باشد
+                _logger.LogInformation("✅ Job با موفقیت پایان یافت. پردازش اشتراک‌های منقضی و ارسال به RabbitMQ انجام شد.");
             }
             catch (Exception ex)
             {

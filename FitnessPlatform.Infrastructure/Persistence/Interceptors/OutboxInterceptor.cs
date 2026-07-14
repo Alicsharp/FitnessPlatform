@@ -1,6 +1,7 @@
 ﻿using FitnessPlatform.Domain.Common;
 using Microsoft.EntityFrameworkCore.Diagnostics;
- 
+using Newtonsoft.Json;
+
 namespace FitnessPlatform.Infrastructure.Persistence.Interceptors
 {
     public sealed class OutboxInterceptor : SaveChangesInterceptor

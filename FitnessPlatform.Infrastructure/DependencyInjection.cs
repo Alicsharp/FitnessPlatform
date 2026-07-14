@@ -1,5 +1,6 @@
 ﻿using FitnessPlatform.Application.Interfaces;
 using FitnessPlatform.Domain.Repositories;
+using FitnessPlatform.Infrastructure.BackgroundJobs;
 using FitnessPlatform.Infrastructure.Messaging.Consumers;
 using FitnessPlatform.Infrastructure.Persistence;
 using FitnessPlatform.Infrastructure.Persistence.FitnessPlatform.Infrastructure.Persistence;
@@ -43,12 +44,13 @@ public static class DependencyInjection
                 .AddTrigger(trigger =>
                     trigger.ForJob(jobKey)
                            .WithSimpleSchedule(schedule =>
-                               schedule.WithIntervalInSeconds(10) // هر ۱۰ ثانیه چک می‌کند
+                               schedule.WithIntervalInSeconds(10) // هر ۱۰ ثانیه جارو می‌کند
                                        .RepeatForever()));
         });
 
         services.AddQuartzHostedService(options =>
         {
+            // این خط تضمین می‌کند که اگر سرور در حال خاموش شدن بود، ابتدا کار Job فعلی تمام شود
             options.WaitForJobsToComplete = true;
         });
 
