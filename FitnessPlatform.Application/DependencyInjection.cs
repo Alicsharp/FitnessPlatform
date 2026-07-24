@@ -1,4 +1,6 @@
-﻿using FitnessPlatform.Domain.Services.Strategies;
+﻿using FitnessPlatform.Application.Common;
+using FitnessPlatform.Domain.Services.Strategies;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FitnessPlatform.Application;
@@ -13,6 +15,7 @@ public static class DependencyInjection
         services.AddScoped<WorkoutGeneratorDomainService>();
         // ⚡️ این خط را از حالت کامنت خارج کردیم!
         services.AddScoped<IWorkoutGenerationStrategy, BodybuilderGymStrategy>();
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CachingBehavior<,>));
         return services;
     }
 }

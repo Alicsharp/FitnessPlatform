@@ -24,5 +24,5 @@ namespace FitnessPlatform.Application.Features.Booking.Queries.GetAvailableClass
                 c.EnrolledMembers.Count // تعداد افراد ثبت‌نام شده
             ));
         }
-    }
+    }// ⚡️ با اضافه کردن ICacheableQuery، این کوئری به طور خودکار کش می‌شود!
 }

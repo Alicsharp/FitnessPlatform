@@ -39,6 +39,11 @@ try
     // ==========================================
     // ۳. راه‌اندازی داشبورد سلامت (Health Checks)
     // ==========================================
+    builder.Services.AddStackExchangeRedisCache(options =>
+    {
+        options.Configuration = builder.Configuration.GetConnectionString("Redis") ?? "localhost:6379";
+        options.InstanceName = "FitnessPlatform_";
+    });
     builder.Services.AddHealthChecks()
            .AddSqlServer(
                builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string is missing."),
